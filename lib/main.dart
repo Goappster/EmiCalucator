@@ -79,7 +79,7 @@ class _SlidingPieChartState extends State<SlidingPieChart> with SingleTickerProv
         value: animatedValue,
         title: '${(animatedValue).toInt()}%', // Display value dynamically
         radius: radius,
-        titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
       );
     });
   }
