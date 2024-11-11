@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pcparts/TestCOde/car%20loan.dart';
+import 'package:pcparts/TestCOde/screens/emicalc.dart';
 
-void main() {
-  runApp(EMICalculatorApp());
-}
 
 class EMICalculatorApp extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -43,20 +42,66 @@ class LoanOptions extends StatelessWidget {
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
         children: [
-          LoanCard(title: 'Car Loan', ImagePath: 'assets/car1_loan.png'),
-          LoanCard(title: 'Business Loan', ImagePath: 'assets/house_loan.png'),
-          LoanCard(title: 'Mortgage Loans', ImagePath: 'assets/mortgage_loan.png'),
-          LoanCard(title: 'Flat Vs Reducing', ImagePath: 'assets/car_loan.png'),
-          LoanCard(title: 'Home Loan', ImagePath: 'assets/home_loan.png'),
-          LoanCard(title: 'Fixed Deposit', ImagePath: 'assets/deposit_loan.png'),
-          LoanCard(title: 'Car Loan calculator', ImagePath: 'assets/car_cal_loan.png'),
-          LoanCard(title: 'Recurring Deposit', ImagePath: 'assets/recurring_dep.png'),
+          GestureDetector(
+            onTap: () {
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoanCalculatorScreen()),
+              );
+            },
+            child: LoanCard(title: 'Car Loan', ImagePath: 'assets/car1_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EMICalcWidget()),
+              );
+            },
+            child: LoanCard(title: 'Business Loan', ImagePath: 'assets/house_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Mortgage Loans', ImagePath: 'assets/mortgage_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Flat Vs Reducing', ImagePath: 'assets/car_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Home Loan', ImagePath: 'assets/home_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Fixed Deposit', ImagePath: 'assets/deposit_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Car Loan Calculator', ImagePath: 'assets/car_cal_loan.png'),
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: LoanCard(title: 'Recurring Deposit', ImagePath: 'assets/recurring_dep.png'),
+          ),
         ],
       ),
     );
   }
 }
-
 class LoanCard extends StatelessWidget {
   final String title;
   final String ImagePath;

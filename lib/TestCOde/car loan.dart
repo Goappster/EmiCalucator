@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-void main() => runApp(CarLoanCalculator());
-
-class CarLoanCalculator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Car Loan Calculator',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoanCalculatorScreen(),
-    );
-  }
-}
+// void main() => runApp(CarLoanCalculator());
+//
+// class CarLoanCalculator extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Car Loan Calculator',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: LoanCalculatorScreen(),
+//     );
+//   }
+// }
 
 class LoanCalculatorScreen extends StatefulWidget {
   @override
@@ -61,7 +61,7 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
 
     // Input validation
     if (loanAmount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a valid loan amount.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter a valid loan amount.')));
       return;
     }
 
@@ -93,15 +93,15 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Car Loan Calculator'),
+        title: const Text('Car Loan Calculator'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: loanAmountController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Loan Amount',
                 hintText: 'Enter loan amount',
                 border: OutlineInputBorder(),
@@ -111,7 +111,7 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
                 FilteringTextInputFormatter.digitsOnly,
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -130,7 +130,7 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,7 +149,7 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DropdownButton<String>(
               value: calculationType,
               onChanged: (String? newValue) {
@@ -164,10 +164,10 @@ class _LoanCalculatorScreenState extends State<LoanCalculatorScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: calculateAndNavigate,
-              child: Text('Calculate'),
+              child: const Text('Calculate'),
             ),
           ],
         ),
@@ -204,7 +204,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     super.initState();
 
     _controller = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
 
@@ -243,7 +243,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Loan Calculation Result'),
+        title: const Text('Loan Calculation Result'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -252,29 +252,29 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
           children: [
             Text(
               'Loan Amount: ${NumberFormat.currency(locale: 'en_IN', symbol: '₹').format(widget.loanAmount)}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Interest Rate: ${widget.interestRate.toStringAsFixed(2)}%',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Duration: ${widget.duration} months',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               widget.calculationType == 'Monthly'
                   ? 'Monthly EMI: ${NumberFormat.currency(locale: 'en_IN', symbol: '₹').format(widget.emi)}'
                   : 'Yearly EMI: ${NumberFormat.currency(locale: 'en_IN', symbol: '₹').format(widget.emi)}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Repayment Schedule (${widget.calculationType}):',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            Container(
+            const SizedBox(height: 10),
+            SizedBox(
               width: 300,
               height: 400,
               child: Center(
@@ -290,7 +290,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -301,10 +301,8 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     // Calculate total payment and total interest
     double totalPayment = widget.emi * widget.duration;
     double totalInterest = totalPayment - widget.loanAmount;
-
     // Calculate the principal payment
     double principalPayment = widget.loanAmount;
-
     // Values for the pie chart
     final sectionValues = [
       principalPayment, // Principal Amount
@@ -313,8 +311,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
 
     return List.generate(sectionValues.length, (index) {
       final double animatedValue = sectionValues[index] * _animation.value;
-      final radius = 50.0;
-
+      const radius = 50.0;
       return PieChartSectionData(
         color: index == 0 ? Colors.blue : Colors.red,
         value: animatedValue,
