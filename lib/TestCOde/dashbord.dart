@@ -1,239 +1,375 @@
 import 'package:flutter/material.dart';
-import 'package:pcparts/TestCOde/car%20loan.dart';
-import 'package:pcparts/TestCOde/screens/emicalc.dart';
+import 'dart:math';
 
+import '../resultscreen.dart';
 
-class EMICalculatorApp extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class PersonalLoanPlanner extends StatefulWidget {
+  const PersonalLoanPlanner({super.key});
+
+  @override
+  _PersonalLoanPlannerState createState() => _PersonalLoanPlannerState();
+}
+
+class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController interestRateController = TextEditingController();
+  final TextEditingController loanTenureController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  DateTime? selectedStartDate;
+  String tenureType = 'Months';
+
+  String? _validateAmount(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter loan amount';
+    }
+    if (double.tryParse(value) == null) {
+      return 'Please enter a valid number';
+    }
+    if (double.parse(value) <= 0) {
+      return 'Amount must be greater than 0';
+    }
+    return null;
+  }
+
+  String? _validateInterestRate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter interest rate';
+    }
+    if (double.tryParse(value) == null) {
+      return 'Please enter a valid number';
+    }
+    if (double.parse(value) <= 0 || double.parse(value) > 100) {
+      return 'Rate must be between 0 and 100';
+    }
+    return null;
+  }
+
+  String? _validateTenure(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter loan tenure';
+    }
+    if (int.tryParse(value) == null) {
+      return 'Please enter a valid number';
+    }
+    if (int.parse(value) <= 0) {
+      return 'Tenure must be greater than 0';
+    }
+    return null;
+  }
+
+  void _navigateToResultScreen() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    
+    if (selectedStartDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a start date')),
+      );
+      return;
+    }
+
+    double principal = double.parse(amountController.text);
+    double annualRate = double.parse(interestRateController.text);
+    int tenure = int.parse(loanTenureController.text);
+
+    if (tenureType == 'Years') {
+      tenure *= 12; // Convert years to months
+    }
+
+    // Calculate EMI
+    double monthlyRate = annualRate / 12 / 100;
+    double emi = (principal * monthlyRate * pow(1 + monthlyRate, tenure)) /
+        (pow(1 + monthlyRate, tenure) - 1);
+
+    double totalPayment = emi * tenure;
+    double totalInterest = totalPayment - principal;
+
+    // Navigate to Result Screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultScreen(
+          emi: emi,
+          totalPayment: totalPayment,
+          totalInterest: totalInterest,
+          startDate: selectedStartDate!,
+          principal: principal,
+          annualRate: annualRate,
+          tenure: tenure,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'EMI Calculator',
-      home: Scaffold(
-        key: _scaffoldKey, // Assign the key here
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text('EMI Calculator'),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.menu_outlined, color: Colors.black), // Custom drawer icon
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer(); // Open the drawer
-            },
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).primaryColor.withOpacity(0.8),
+              Theme.of(context).primaryColor.withOpacity(0.2),
+            ],
           ),
         ),
-        drawer: AppDrawer(),
-        body: LoanOptions(),
-      ),
-    );
-  }
-}
-
-class LoanOptions extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 1.2,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 8.0,
-        children: [
-          GestureDetector(
-            onTap: () {
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoanCalculatorScreen()),
-              );
-            },
-            child: LoanCard(title: 'Car Loan', ImagePath: 'assets/car1_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EMICalcWidget()),
-              );
-            },
-            child: LoanCard(title: 'Business Loan', ImagePath: 'assets/house_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Mortgage Loans', ImagePath: 'assets/mortgage_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Flat Vs Reducing', ImagePath: 'assets/car_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Home Loan', ImagePath: 'assets/home_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Fixed Deposit', ImagePath: 'assets/deposit_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Car Loan Calculator', ImagePath: 'assets/car_cal_loan.png'),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: LoanCard(title: 'Recurring Deposit', ImagePath: 'assets/recurring_dep.png'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-class LoanCard extends StatelessWidget {
-  final String title;
-  final String ImagePath;
-
-  LoanCard({required this.title, required this.ImagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 3,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            ImagePath,
-            height: 80,
-            fit: BoxFit.fill,
-          ),
-          SizedBox(height: 10),
-          Text(
-            title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AppDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/home_loan.png'), // Replace with your app logo
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Custom App Bar
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                        ),
+                        const Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          amountController.clear();
+                          interestRateController.clear();
+                          loanTenureController.clear();
+                          selectedStartDate = null;
+                          tenureType = 'Months';
+                        });
+                      },
+                      icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'EMI Calculator',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              // Main Content
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildInputField(
+                            'Loan Amount',
+                            Icons.attach_money_rounded,
+                            amountController,
+                            'Enter amount',
+                            _validateAmount,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildInputField(
+                            'Interest Rate (%)',
+                            Icons.percent_rounded,
+                            interestRateController,
+                            'Enter rate',
+                            _validateInterestRate,
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: _buildInputField(
+                                  'Loan Tenure',
+                                  Icons.calendar_today_rounded,
+                                  loanTenureController,
+                                  'Duration',
+                                  _validateTenure,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Duration',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          value: tenureType,
+                                          isExpanded: true,
+                                          icon: Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          items: ['Months', 'Years']
+                                              .map((type) => DropdownMenuItem(
+                                                    value: type,
+                                                    child: Text(type),
+                                                  ))
+                                              .toList(),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              tenureType = value!;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          // Date Picker
+                          InkWell(
+                            onTap: () async {
+                              final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: selectedStartDate ?? DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+                              );
+                              if (picked != null) {
+                                setState(() {
+                                  selectedStartDate = picked;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(0.3),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.calendar_month_rounded,
+                                      color: Theme.of(context).primaryColor),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    selectedStartDate == null
+                                        ? 'Select Start Date'
+                                        : 'Start Date: ${selectedStartDate!.day}/${selectedStartDate!.month}/${selectedStartDate!.year}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          // Calculate Button
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: _navigateToResultScreen,
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: const Text(
+                                'Calculate EMI',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('About Us'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.privacy_tip),
-            title: const Text('Privacy Policy'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PrivacyPolicyPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.apps),
-            title: const Text('Other Apps'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OtherAppsPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.star),
-            title: const Text('Rate Us'),
-            onTap: () {
-              // Handle the rating functionality here
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class AboutPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('About Us')),
-      body: const Center(child: Text('This is the About Us page.')),
+  Widget _buildInputField(
+    String label,
+    IconData icon,
+    TextEditingController controller,
+    String hint, [
+    String? Function(String?)? validator,
+  ]) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.3),
+            ),
+          ),
+          child: TextFormField(
+            controller: controller,
+            validator: validator,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            decoration: InputDecoration(
+              hintText: hint,
+              prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-class PrivacyPolicyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Privacy Policy')),
-      body: const Center(child: Text('This is the Privacy Policy page.')),
-    );
-  }
-}
-
-class OtherAppsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Other Apps')),
-      body: const Center(child: Text('List of other apps will be shown here.')),
-    );
-  }
+void main() {
+  runApp(const MaterialApp(
+    home: PersonalLoanPlanner(),
+  ));
 }

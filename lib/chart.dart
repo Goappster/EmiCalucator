@@ -22,10 +22,10 @@ class LoanMasterHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('loanmaster.'),
+        title: const Text('loanmaster.'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               // Search functionality
             },
@@ -38,12 +38,12 @@ class LoanMasterHomePage extends StatelessWidget {
           children: [
             // Invite Friends Section
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               decoration: BoxDecoration(
                 color: Colors.blue[100],
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(Icons.airplane_ticket, color: Colors.blue),
@@ -52,10 +52,10 @@ class LoanMasterHomePage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Loan Type Selection
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(Icons.business),
@@ -64,10 +64,10 @@ class LoanMasterHomePage extends StatelessWidget {
                 Icon(Icons.agriculture),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Loan Amount Slider
-            Text('Loan Amount'),
+            const Text('Loan Amount'),
             Slider(
               value: 34000,
               min: 100,
@@ -76,11 +76,11 @@ class LoanMasterHomePage extends StatelessWidget {
               label: '\$34,000',
               onChanged: (value) {},
             ),
-            Text('\$34,000', style: TextStyle(fontSize: 18)),
+            const Text('\$34,000', style: TextStyle(fontSize: 18)),
 
             // Loan Duration Selector
-            SizedBox(height: 20),
-            Text('Loan Duration'),
+            const SizedBox(height: 20),
+            const Text('Loan Duration'),
             DropdownButton<String>(
               value: '5 Years',
               items: <String>['1 Year', '3 Years', '5 Years', '10 Years']
@@ -94,34 +94,34 @@ class LoanMasterHomePage extends StatelessWidget {
             ),
 
             // Expected Rate Selector
-            SizedBox(height: 20),
-            Text('Expected Rate'),
-            TextField(
+            const SizedBox(height: 20),
+            const Text('Expected Rate'),
+            const TextField(
               decoration: InputDecoration(
                 hintText: '9% - 13%',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // See Loans Button
             ElevatedButton(
               onPressed: () {
                 // Navigate to loans page or show loans
               },
-              child: Text('See Loans'),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                textStyle: TextStyle(fontSize: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                textStyle: const TextStyle(fontSize: 18),
               ),
+              child: const Text('See Loans'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Best Deals Section
-            Text('Best Deals', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text('Best Deals', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             Expanded(
               child: ListView(
-                children: [
+                children: const [
                   BestDealCard(
                     bankName: 'Citi Bank',
                     loanAmount: '\$34,000',
@@ -165,19 +165,19 @@ class BestDealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(bankName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            Text(bankName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             Text('Amount: $loanAmount'),
             Text('Monthly Instalment: $monthlyInstalment'),
             Text('Rate: $rate'),
             Text('Duration: $duration'),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Top rated and very Flexible. Entirely online process and quick approval',
               style: TextStyle(color: Colors.grey[600]),
