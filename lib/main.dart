@@ -10,6 +10,7 @@ import 'providers/currency_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'screens/onboarding_screen.dart';
 
 import 'TestCOde/dashbord.dart';
@@ -18,12 +19,17 @@ import 'screens/car_loan_calculator.dart';
 import 'screens/personal_loan_calculator.dart';
 import 'screens/result_screen.dart';
 
-void main() {
-  runApp(const EMICalculatorApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final hasCompletedOnboarding = prefs.getBool('hasCompletedOnboarding') ?? false;
+  runApp(EMICalculatorApp(showOnboarding: !hasCompletedOnboarding));
 }
 
 class EMICalculatorApp extends StatelessWidget {
-  const EMICalculatorApp({super.key});
+  final bool showOnboarding;
+  
+  const EMICalculatorApp({super.key, this.showOnboarding = true});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,7 @@ class EMICalculatorApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
             ],
-            home: const OnboardingScreen(),
+            home: showOnboarding ? const OnboardingScreen() : const BottomNavExample(),
             routes: {
               '/home': (context) => const BottomNavExample(),
               '/home_loan': (context) => const HomeLoanCalculator(),
@@ -190,8 +196,18 @@ class _BottomNavExampleState extends State<BottomNavExample> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDisclaimerDialog();
+      _checkFirstLaunch();
     });
+  }
+
+  Future<void> _checkFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+    
+    if (isFirstLaunch) {
+      _showDisclaimerDialog();
+      await prefs.setBool('isFirstLaunch', false);
+    }
   }
 
   void _showDisclaimerDialog() {
@@ -200,15 +216,39 @@ class _BottomNavExampleState extends State<BottomNavExample> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('disclaimer'),
-          content: const Text("This FinFlux - EMI Calculator app is just a financial tool and not any loan provider or connection with any NBFC or any finance services"
-          "This app is working as a financial calculator app and not giving any lending services."),
+          title: const Text('Disclaimer'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "This FinFlux - EMI Calculator app is just a financial tool and not any loan provider or connection with any NBFC or any finance services. "
+                "This app is working as a financial calculator app and not giving any lending services."
+              ),
+              const SizedBox(height: 16),
+              InkWell(
+                onTap: () async {
+                  final Uri url = Uri.parse('https://emiprivacypolicy12.blogspot.com/2024/11/privacy-policy.html');
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  }
+                },
+                child: Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('accept'),
+              child: const Text('Accept'),
             ),
           ],
         );

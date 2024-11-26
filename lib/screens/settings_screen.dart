@@ -143,6 +143,16 @@ class SettingsScreen extends StatelessWidget {
           ),
           const Divider(),
           
+          // Privacy Policy
+          ListTile(
+            leading: const Icon(Icons.privacy_tip),
+            title: const Text('Privacy Policy'),
+            onTap: () {
+              launchUrl(Uri.parse('https://emiprivacypolicy12.blogspot.com/2024/11/privacy-policy.html'));
+            },
+          ),
+          const Divider(),
+          
           // Share App
           ListTile(
             leading: const Icon(Icons.share),
@@ -159,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Rate App'),
             onTap: () {
               // Add your Play Store link here
-              launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=your.app.id'));
+              launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.fin.flux.dev.app'));
             },
           ),
           const Divider(),

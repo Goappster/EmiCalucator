@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../main.dart';
 import '../providers/currency_provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -210,24 +211,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _saveCurrencyAndComplete() async {
+    setState(() {
+      _isLoading = true;
+    });
+    
     try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      final currencyProvider = Provider.of<CurrencyProvider>(context, listen: false);
-      await currencyProvider.setCurrency(_selectedCurrency);
-      
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('onboardingComplete', true);
+      await prefs.setBool('hasCompletedOnboarding', true);
       
       if (!mounted) return;
-
-      Navigator.pushReplacementNamed(context, '/home');
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+      
+      // Set the selected currency
+      final currencyProvider = Provider.of<CurrencyProvider>(context, listen: false);
+      currencyProvider.setCurrency(_selectedCurrency);
+      
+      // Navigate to main app
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) =>  BottomNavExample()),
       );
     } finally {
       if (mounted) {
