@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
 import '../theme/language_provider.dart';
@@ -27,7 +28,8 @@ class SettingsScreen extends StatelessWidget {
               return SwitchListTile(
                 title: const Text('Dark Mode'),
                 secondary: Icon(
-                  themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                  themeProvider.isDarkMode ? MingCute.moon_stars_fill : MingCute.moonlight_line,
+                  size: 30,
                 ),
                 value: themeProvider.isDarkMode,
                 onChanged: (value) {
@@ -42,7 +44,7 @@ class SettingsScreen extends StatelessWidget {
           Consumer<LanguageProvider>(
             builder: (context, languageProvider, child) {
               return ExpansionTile(
-                leading: const Icon(Icons.language),
+                leading: const Icon(MingCute.translate_2_line, size: 30,),
                 title: const Text('Language'),
                 children: languageProvider.supportedLanguages.entries.map((language) {
                   return RadioListTile<String>(
@@ -104,10 +106,10 @@ class SettingsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
+                                color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer : Colors.grey.withOpacity(0.20),
                                 width: isSelected ? 2 : 1,
                               ),
-                              color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
+                              color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.1) : null,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -121,7 +123,7 @@ class SettingsScreen extends StatelessWidget {
                                   currency['code']!,
                                   style: TextStyle(
                                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                    color: isSelected ? Theme.of(context).primaryColor : null,
+                                    color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer : null,
                                   ),
                                 ),
                               ],
@@ -145,27 +147,26 @@ class SettingsScreen extends StatelessWidget {
           
           // Privacy Policy
           ListTile(
-            leading: const Icon(Icons.privacy_tip),
+            leading: const Icon(MingCute.question_fill, size: 30,),
             title: const Text('Privacy Policy'),
             onTap: () {
-              launchUrl(Uri.parse('https://emiprivacypolicy12.blogspot.com/2024/11/privacy-policy.html'));
+              launchUrl(Uri.parse('https://sites.google.com/view/finflux?usp=sharing'));
             },
           ),
           const Divider(),
           
           // Share App
           ListTile(
-            leading: const Icon(Icons.share),
+            leading: const Icon(MingCute.share_2_fill, size: 30,),
             title: const Text('Share App'),
             onTap: () {
-              Share.share('Check out this amazing EMI Calculator app!');
+              Share.share('Check out this amazing EMI Calculator app! '
+                  'https://play.google.com/store/apps/details?id=com.fin.flux.dev.app');
             },
           ),
           const Divider(),
-          
-          // Rate App
           ListTile(
-            leading: const Icon(Icons.star),
+            leading: const Icon(MingCute.star_half_fill, size: 30,),
             title: const Text('Rate App'),
             onTap: () {
               // Add your Play Store link here
@@ -173,19 +174,18 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           const Divider(),
-          
           // About
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(MingCute.information_fill, size: 30,),
             title: const Text('About'),
             onTap: () {
               showAboutDialog(
                 context: context,
-                applicationName: 'EMI Calculator',
-                applicationVersion: '1.0.0',
-                applicationIcon: Image.asset('assets/app_icon.png', width: 70, height: 70),
+                applicationName: 'Fin Flux - EMI Loan Calculator',
+                applicationVersion: '1.4',
+                applicationIcon: ClipRRect(borderRadius:  BorderRadius.circular(18),child: Image.asset('assets/app_icon.png', width: 70, height: 70)),
                 children: const [
-                  Text('A simple and powerful EMI calculator app to help you plan your loans.'),
+                  Text('This comprehensive financial calculator is designed to save you time and reduce errors'),
                 ],
               );
             },

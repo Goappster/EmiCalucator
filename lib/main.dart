@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pcparts/crunncy/test.dart';
 import 'package:pcparts/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'theme/theme_provider.dart';
 import 'theme/language_provider.dart';
 import 'providers/currency_provider.dart';
@@ -45,24 +46,53 @@ class EMICalculatorApp extends StatelessWidget {
           final languageProvider = Provider.of<LanguageProvider>(context);
           Provider.of<CurrencyProvider>(context);
           
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: themeProvider.themeData,
-            locale: languageProvider.currentLocale,
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            home: showOnboarding ? const OnboardingScreen() : const BottomNavExample(),
-            routes: {
-              '/home': (context) => const BottomNavExample(),
-              '/home_loan': (context) => const HomeLoanCalculator(),
-              '/car_loan': (context) => const CarLoanCalculator(),
-              '/personal_loan': (context) => const PersonalLoanCalculator(),
-              '/result': (context) => const ResultScreen(),
+          return DynamicColorBuilder(
+            builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+              ColorScheme lightScheme;
+              ColorScheme darkScheme;
+
+              if (lightDynamic != null && darkDynamic != null) {
+                lightScheme = lightDynamic;
+                darkScheme = darkDynamic;
+              } else {
+                lightScheme = ColorScheme.fromSeed(
+                  seedColor: Colors.blue,
+                  brightness: Brightness.light,
+                );
+                darkScheme = ColorScheme.fromSeed(
+                  seedColor: Colors.blue,
+                  brightness: Brightness.dark,
+                );
+              }
+
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  useMaterial3: true,
+                  colorScheme: lightScheme,
+                ),
+                darkTheme: ThemeData(
+                  useMaterial3: true,
+                  colorScheme: darkScheme,
+                ),
+                themeMode: themeProvider.themeMode,
+                locale: languageProvider.currentLocale,
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                home: showOnboarding ? const OnboardingScreen() : const BottomNavExample(),
+                routes: {
+                  '/home': (context) => const BottomNavExample(),
+                  '/home_loan': (context) => const HomeLoanCalculator(),
+                  '/car_loan': (context) => const CarLoanCalculator(),
+                  '/personal_loan': (context) => const PersonalLoanCalculator(),
+                  '/result': (context) => const ResultScreen(),
+                },
+              );
             },
           );
         },
@@ -70,10 +100,6 @@ class EMICalculatorApp extends StatelessWidget {
     );
   }
 
-  Future<bool> _checkOnboardingStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('has_completed_onboarding') ?? false;
-  }
 }
 
 class LoanOptions extends StatelessWidget {
@@ -81,14 +107,66 @@ class LoanOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dashboard),
-        centerTitle: true,
-        leading:
-        Padding(padding: const EdgeInsets.only(left: 8), child: Lottie.asset('assets/permuim.json', width: 30, height: 30, animate: true)),
+        // centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0), // Add some padding around the icon
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8), // Rounded corners
+            child: Image.asset(
+              'assets/app_icon.png',
+              height: 40, // Ensure proper size
+              width: 40,
+              fit: BoxFit.cover, // Ensures the image fits well within the rounded edges
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(MingCute.notification_line, size: 25,), // Notification icon
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('📢✨ Release Notes'),
+                      content: const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("🔢 **Calculator Highlights:**"),
+                          SizedBox(height: 8),
+                          Text("➕ Perform fast and accurate calculations."),
+                          Text("📊 Designed for financial simplicity."),
+                          SizedBox(height: 16),
+                          Text(
+                              "💡 *Note:* This is a tool for financial calculations only, not a lending service."
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Got it!'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
      body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8 ),
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8),
         child: GridView.count(
           crossAxisCount: 1,
           childAspectRatio: 2.4,
@@ -135,7 +213,12 @@ class LoanOptions extends StatelessWidget {
       ),
     );
   }
+
+
+
+
 }
+
 
 
 class LoanCard extends StatelessWidget {
@@ -228,7 +311,7 @@ class _BottomNavExampleState extends State<BottomNavExample> {
               const SizedBox(height: 16),
               InkWell(
                 onTap: () async {
-                  final Uri url = Uri.parse('https://emiprivacypolicy12.blogspot.com/2024/11/privacy-policy.html');
+                  final Uri url = Uri.parse('https://sites.google.com/view/finflux?usp=sharing');
                   if (await canLaunchUrl(url)) {
                     await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
@@ -255,6 +338,9 @@ class _BottomNavExampleState extends State<BottomNavExample> {
       },
     );
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {

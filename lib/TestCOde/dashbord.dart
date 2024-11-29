@@ -130,14 +130,13 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back_ios, ),
                         ),
                         const Text(
-                          '',
+                          'Details',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
                             height: 1.2,
                           ),
                         ),
@@ -280,7 +279,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                               child: Row(
                                 children: [
                                   Icon(Icons.calendar_month_rounded,
-                                      color: Theme.of(context).primaryColor),
+                                     /* color: Theme.of(context).primaryColor*/),
                                   const SizedBox(width: 12),
                                   Text(
                                     selectedStartDate == null
@@ -357,7 +356,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
               hintText: hint,
-              prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
+              prefixIcon: Icon(icon,),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),

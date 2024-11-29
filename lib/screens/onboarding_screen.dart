@@ -119,20 +119,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.calculate_outlined,
-            size: 100,
-            color: Theme.of(context).primaryColor,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
+            child: Image.asset('assets/app_icon.png',height: 150, width: 150,),
           ),
           const SizedBox(height: 32),
           Text(
-            'Welcome to EMI Calculator',
-            style: Theme.of(context).textTheme.headlineMedium,
+            'Welcome to Fin flux',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
+
           ),
           const SizedBox(height: 16),
           Text(
-            'Calculate your EMI payments easily and plan your finances better',
+            'This comprehensive financial calculator is designed to save you time and reduce errors',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),

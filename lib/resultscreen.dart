@@ -216,7 +216,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                   centerSpaceRadius: 40,
                   sections: [
                     PieChartSectionData(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.blue,
                       value: widget.principal,
                       title: '$currencySymbol${widget.principal.toStringAsFixed(0)}',
                       radius: touchedIndex == 0 ? 110 : 100,
@@ -247,16 +247,14 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     Text(
                       'Total',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.grey[600],
+                        fontSize: 14,
                       ),
                     ),
                     Text(
                       '$currencySymbol${widget.totalPayment.toStringAsFixed(0)}',
                       style: GoogleFonts.poppins(
-                        fontSize: 20,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
                       ),
                     ),
                   ],
@@ -276,7 +274,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                 _buildChartDetailRow(
                   'Principal Amount',
                   '$currencySymbol${widget.principal.toStringAsFixed(2)}',
-                  Theme.of(context).primaryColor,
+                  Colors.blue,
                   '${((widget.principal / widget.totalPayment) * 100).toStringAsFixed(1)}%',
                 ),
                 const SizedBox(height: 12),

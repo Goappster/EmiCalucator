@@ -5,6 +5,8 @@ class ThemeProvider with ChangeNotifier {
   bool _isDarkMode = false;
   bool get isDarkMode => _isDarkMode;
 
+  ThemeMode get themeMode => _isDarkMode ? ThemeMode.dark : ThemeMode.light;
+
   ThemeData get themeData {
     return _isDarkMode ? _darkTheme : _lightTheme;
   }
@@ -16,17 +18,6 @@ class ThemeProvider with ChangeNotifier {
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
-      ),
-    ),
-    textTheme: const TextTheme(
-      headlineMedium: TextStyle(
-        color: Colors.black87,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
-      bodyLarge: TextStyle(
-        color: Colors.black87,
-        fontSize: 16,
       ),
     ),
   );
@@ -43,17 +34,6 @@ class ThemeProvider with ChangeNotifier {
         borderRadius: BorderRadius.circular(8),
       ),
       color: Colors.grey[850],
-    ),
-    textTheme: const TextTheme(
-      headlineMedium: TextStyle(
-        color: Colors.white,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
-      bodyLarge: TextStyle(
-        color: Colors.white70,
-        fontSize: 16,
-      ),
     ),
   );
 
