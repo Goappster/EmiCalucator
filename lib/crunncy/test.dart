@@ -7,6 +7,7 @@ class CurrencyConverterScreen extends StatefulWidget {
   const CurrencyConverterScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CurrencyConverterScreenState createState() =>
       _CurrencyConverterScreenState();
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../providers/currency_provider.dart';
-import '../models/loan_model.dart';
 import '../utils/constants.dart';
 
 class LoanCalculatorScreen extends StatefulWidget {

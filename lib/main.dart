@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pcparts/crunncy/test.dart';
 import 'package:pcparts/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,6 @@ import 'l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'screens/onboarding_screen.dart';
-
 import 'TestCOde/dashbord.dart';
 import 'screens/home_loan_calculator.dart';
 import 'screens/car_loan_calculator.dart';
@@ -174,7 +172,6 @@ class LoanOptions extends StatelessWidget {
           mainAxisSpacing: 16.0,
           children: [
             GestureDetector(
-
               child: LoanCard(title: AppLocalizations.of(context)!.businessLoan, ImagePath: 'assets/house_loan.png', BgImagePath: 'assets/bd_07.png'),
             ),
             GestureDetector(
@@ -223,6 +220,7 @@ class LoanOptions extends StatelessWidget {
 
 class LoanCard extends StatelessWidget {
   final String title;
+  // ignore: non_constant_identifier_names
   final String ImagePath;
   final String BgImagePath;
 

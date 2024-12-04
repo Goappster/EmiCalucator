@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'loan_calculator_screen.dart';
 
 class CarLoanCalculator extends StatelessWidget {
-  const CarLoanCalculator({Key? key}) : super(key: key);
+  const CarLoanCalculator({super.key});
 
   @override
   Widget build(BuildContext context) {

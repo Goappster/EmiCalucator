@@ -20,6 +20,8 @@ import 'package:intl/intl.dart';
 // }
 
 class LoanCalculatorScreen extends StatefulWidget {
+  const LoanCalculatorScreen({super.key});
+
   @override
   _LoanCalculatorScreenState createState() => _LoanCalculatorScreenState();
 }
@@ -183,7 +185,7 @@ class ResultScreen extends StatefulWidget {
   final double emi;
   final String calculationType;
 
-  ResultScreen({
+  const ResultScreen({super.key, 
     required this.loanAmount,
     required this.interestRate,
     required this.duration,

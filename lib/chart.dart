@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(LoanMasterApp());
+  runApp(const LoanMasterApp());
 }
 
 class LoanMasterApp extends StatelessWidget {
+  const LoanMasterApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LoanMaster',
-      theme: ThemeData(
+          theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoanMasterHomePage(),
+      home: const LoanMasterHomePage(),
     );
   }
 }
 
 class LoanMasterHomePage extends StatelessWidget {
+  const LoanMasterHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,13 +157,13 @@ class BestDealCard extends StatelessWidget {
   final String duration;
 
   const BestDealCard({
-    Key? key,
+    super.key,
     required this.bankName,
     required this.loanAmount,
     required this.monthlyInstalment,
     required this.rate,
     required this.duration,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

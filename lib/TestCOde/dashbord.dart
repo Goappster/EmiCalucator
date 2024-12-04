@@ -278,7 +278,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.calendar_month_rounded,
+                                  const Icon(Icons.calendar_month_rounded,
                                      /* color: Theme.of(context).primaryColor*/),
                                   const SizedBox(width: 12),
                                   Text(
@@ -296,22 +296,23 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                           SizedBox(
                             width: double.infinity,
                             height: 56,
+                          
                             child: ElevatedButton(
                               onPressed: _navigateToResultScreen,
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
+                                  
                                 ),
                               ),
-                              child: const Text(
-                                'Calculate EMI',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                              child:  Text(
+                                'Calculate',
+                                style: Theme.of(context).textTheme.bodyLarge
                                 ),
                               ),
                             ),
-                          ),
+                        
                         ],
                       ),
                     ),

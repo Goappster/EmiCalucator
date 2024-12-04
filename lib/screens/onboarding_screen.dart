@@ -5,7 +5,7 @@ import '../main.dart';
 import '../providers/currency_provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
@@ -227,7 +227,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       
       // Navigate to main app
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) =>  BottomNavExample()),
+        MaterialPageRoute(builder: (_) =>  const BottomNavExample()),
       );
     } finally {
       if (mounted) {

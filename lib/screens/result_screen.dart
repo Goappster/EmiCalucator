@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../providers/currency_provider.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({Key? key}) : super(key: key);
+  const ResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
