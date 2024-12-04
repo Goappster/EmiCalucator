@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pcparts/Widget/bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
@@ -227,7 +228,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       
       // Navigate to main app
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) =>  const BottomNavExample()),
+        MaterialPageRoute(builder: (_) =>  const BottomNav()),
       );
     } finally {
       if (mounted) {

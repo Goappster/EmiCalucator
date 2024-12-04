@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pcparts/theme/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'providers/currency_provider.dart';
 
@@ -57,7 +58,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Theme.of(context).primaryColor,
+          indicatorColor: Theme.of(context).colorScheme.primary,
           labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
           unselectedLabelStyle: GoogleFonts.poppins(),
           tabs: const [
@@ -112,30 +113,36 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     return Consumer<CurrencyProvider>(
       builder: (context, currencyProvider, child) {
         final currencySymbol = currencyProvider.currencySymbol;
-        return Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Monthly EMI',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+        return SizedBox(
+          width: double.infinity,
+          child: Card(
+            elevation: 0,
+            color: Colors.blue[100],
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Monthly EMI',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '$currencySymbol${widget.emi.toStringAsFixed(2)}',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
+                  const SizedBox(height: 8),
+                  Text(
+                    '$currencySymbol${widget.emi.toStringAsFixed(2)}',
+                    style: GoogleFonts.poppins(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'dart:math';
 
 import '../resultscreen.dart';
+import '../theme/app_colors.dart';
 
 class PersonalLoanPlanner extends StatefulWidget {
   const PersonalLoanPlanner({super.key});
@@ -11,10 +13,13 @@ class PersonalLoanPlanner extends StatefulWidget {
 }
 
 class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
+
   final TextEditingController amountController = TextEditingController();
   final TextEditingController interestRateController = TextEditingController();
   final TextEditingController loanTenureController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+
   DateTime? selectedStartDate;
   String tenureType = 'Months';
 
@@ -102,20 +107,17 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
     );
   }
 
+
+  String nameCategory = 'Car loan';
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).primaryColor.withOpacity(0.8),
-              Theme.of(context).primaryColor.withOpacity(0.2),
-            ],
-          ),
+        decoration: const BoxDecoration(
+          color: AppColors.primaryColor
         ),
         child: SafeArea(
           child: Column(
@@ -132,9 +134,9 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                           onPressed: () => Navigator.pop(context),
                           icon: const Icon(Icons.arrow_back_ios, ),
                         ),
-                        const Text(
-                          'Details',
-                          style: TextStyle(
+                         Text(
+                         nameCategory,
+                          style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             height: 1.2,
@@ -176,7 +178,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                         children: [
                           _buildInputField(
                             'Loan Amount',
-                            Icons.attach_money_rounded,
+                            MingCute.coin_2_fill,
                             amountController,
                             'Enter amount',
                             _validateAmount,
@@ -198,7 +200,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                                 flex: 2,
                                 child: _buildInputField(
                                   'Loan Tenure',
-                                  Icons.calendar_today_rounded,
+                                  MingCute.to_do_fill,
                                   loanTenureController,
                                   'Duration',
                                   _validateTenure,
@@ -230,8 +232,8 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                                           value: tenureType,
                                           isExpanded: true,
                                           icon: Icon(
-                                            Icons.arrow_drop_down_rounded,
-                                            color: Theme.of(context).primaryColor,
+                                           MingCute.down_small_fill,
+                                            // color: Theme.of(context).primaryColor,
                                           ),
                                           items: ['Months', 'Years']
                                               .map((type) => DropdownMenuItem(
@@ -278,7 +280,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.calendar_month_rounded,
+                                  const Icon(MingCute.calendar_fill,
                                      /* color: Theme.of(context).primaryColor*/),
                                   const SizedBox(width: 12),
                                   Text(
@@ -296,7 +298,6 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                           SizedBox(
                             width: double.infinity,
                             height: 56,
-                          
                             child: ElevatedButton(
                               onPressed: _navigateToResultScreen,
                               style: ElevatedButton.styleFrom(
@@ -308,11 +309,11 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                               ),
                               child:  Text(
                                 'Calculate',
-                                style: Theme.of(context).textTheme.bodyLarge
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)
                                 ),
                               ),
                             ),
-                        
+                    
                         ],
                       ),
                     ),
@@ -368,8 +369,3 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
   }
 }
 
-void main() {
-  runApp(const MaterialApp(
-    home: PersonalLoanPlanner(),
-  ));
-}

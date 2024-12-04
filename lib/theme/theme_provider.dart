@@ -24,7 +24,7 @@ class ThemeProvider with ChangeNotifier {
 
   static final ThemeData _lightTheme = ThemeData(
     brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
     ),
     cardTheme: CardTheme(
       elevation: 2,
@@ -37,13 +37,13 @@ class ThemeProvider with ChangeNotifier {
   static final ThemeData _darkTheme = ThemeData(
     brightness: Brightness.dark,
   
-    cardTheme: CardTheme(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      color: const Color(0xFF2C2C2C),
-    ),
+    // cardTheme: CardTheme(
+    //   elevation: 2,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(8),
+    //   ),
+    //   color: const Color.fromARGB(255, 0, 0, 0),
+    // ),
   );
 
   ThemeProvider() {
