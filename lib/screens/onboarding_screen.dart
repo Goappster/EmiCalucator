@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pcparts/Widget/bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main.dart';
 import '../providers/currency_provider.dart';
 
 class OnboardingScreen extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pcparts/theme/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'providers/currency_provider.dart';
 
