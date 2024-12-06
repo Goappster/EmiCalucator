@@ -108,7 +108,7 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
   }
 
 
-  String nameCategory = 'Car loan';
+  String nameCategory = 'Car';
 
 
   @override
@@ -207,51 +207,51 @@ class _PersonalLoanPlannerState extends State<PersonalLoanPlanner> {
                                 ),
                               ),
                               const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Duration',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.grey.withOpacity(0.3),
-                                        ),
-                                      ),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton<String>(
-                                          value: tenureType,
-                                          isExpanded: true,
-                                          icon: Icon(
-                                           MingCute.down_small_fill,
-                                            // color: Theme.of(context).primaryColor,
-                                          ),
-                                          items: ['Months', 'Years']
-                                              .map((type) => DropdownMenuItem(
-                                                    value: type,
-                                                    child: Text(type),
-                                                  ))
-                                              .toList(),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              tenureType = value!;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: [
+                              //       const Text(
+                              //         'Duration',
+                              //         style: TextStyle(
+                              //           fontSize: 16,
+                              //           fontWeight: FontWeight.w500,
+                              //         ),
+                              //       ),
+                              //       const SizedBox(height: 8),
+                              //       Container(
+                              //         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                              //         decoration: BoxDecoration(
+                              //           borderRadius: BorderRadius.circular(12),
+                              //           border: Border.all(
+                              //             color: Colors.grey.withOpacity(0.3),
+                              //           ),
+                              //         ),
+                              //         child: DropdownButtonHideUnderline(
+                              //           child: DropdownButton<String>(
+                              //             value: tenureType,
+                              //             isExpanded: true,
+                              //             icon: Icon(
+                              //              MingCute.down_small_fill,
+                              //               // color: Theme.of(context).primaryColor,
+                              //             ),
+                              //             items: ['Months', 'Years']
+                              //                 .map((type) => DropdownMenuItem(
+                              //                       value: type,
+                              //                       child: Text(type),
+                              //                     ))
+                              //                 .toList(),
+                              //             onChanged: (value) {
+                              //               setState(() {
+                              //                 tenureType = value!;
+                              //               });
+                              //             },
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                           const SizedBox(height: 20),

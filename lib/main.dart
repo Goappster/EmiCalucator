@@ -9,7 +9,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/onboarding_screen.dart';
-import 'screens/home_loan_calculator.dart';
 import 'screens/car_loan_calculator.dart';
 import 'screens/personal_loan_calculator.dart';
 import 'screens/result_screen.dart';
@@ -81,7 +80,7 @@ class EMICalculatorApp extends StatelessWidget {
                 home: showOnboarding ? const OnboardingScreen() : const BottomNav(),
                 routes: {
                   '/home': (context) => const BottomNav(),
-                  '/home_loan': (context) => const HomeLoanCalculator(),
+                  // '/home_loan': (context) => const HomeLoalnCalculator(),
                   '/car_loan': (context) => const CarLoanCalculator(),
                   '/personal_loan': (context) => const PersonalLoanCalculator(),
                   '/result': (context) => const ResultScreen(),

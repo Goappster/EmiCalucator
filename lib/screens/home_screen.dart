@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:pcparts/TestCOde/dashbord.dart';
 import 'package:pcparts/l10n/app_localizations.dart';
+import 'package:pcparts/screens/advanced_loan_calculator.dart';
 
 class LoanOptions extends StatelessWidget {
   const LoanOptions({super.key});
@@ -75,7 +76,12 @@ class LoanOptions extends StatelessWidget {
           mainAxisSpacing: 16.0,
           children: [
             GestureDetector(
-
+              onTap: () {
+              Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const AdvancedLoanCalculatorScreen()),
+             );
+              },
               child: LoanCard(title: AppLocalizations.of(context)!.businessLoan, ImagePath: 'assets/house_loan.png', BgImagePath: 'assets/bd_07.png'),
             ),
             GestureDetector(
@@ -109,14 +115,12 @@ class LoanOptions extends StatelessWidget {
               onTap: () { },
               child: LoanCard(title: AppLocalizations.of(context)!.recurringDeposit, ImagePath: 'assets/recurring_dep.png', BgImagePath: 'assets/bd_05.png'),
             ),
+        
           ],
         ),
       ),
     );
   }
-
-
-
 
 }
 
@@ -124,38 +128,71 @@ class LoanOptions extends StatelessWidget {
 
 class LoanCard extends StatelessWidget {
   final String title;
-  // ignore: non_constant_identifier_names
-  final String ImagePath;
-  final String BgImagePath;
+  final String? subtitle;
+  final IconData? icon;
+  final String? ImagePath;
+  final String? BgImagePath;
+  final VoidCallback? onTap;
 
-  const LoanCard({super.key, required this.title, required this.ImagePath, required this.BgImagePath});
+  const LoanCard({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.icon,
+    this.ImagePath,
+    this.BgImagePath,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:  BoxDecoration(
-       borderRadius: BorderRadius.circular(16),
-        image:  DecorationImage(image: AssetImage(BgImagePath), fit: BoxFit.cover, ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            image: AssetImage(BgImagePath ?? ''),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text( title,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  if (subtitle != null)
+                    Text(
+                      subtitle!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                ],
+              ),
+              if (icon != null)
+                Icon(
+                  icon,
+                  size: 24,
+                  color: Colors.white,
                 ),
-                Text(title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-              ],),
             ],
           ),
+        ),
       ),
     );
   }
 }
-
