@@ -49,7 +49,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Loan Summary',
+          'Details',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
           ),
@@ -127,7 +127,8 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     'Monthly EMI',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black
                       
                     ),
                   ),

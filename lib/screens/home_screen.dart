@@ -29,26 +29,34 @@ class LoanOptions extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              icon: const Icon(MingCute.notification_line, size: 25,), // Notification icon
+              icon: const Icon(MingCute.announcement_fill, size: 25,), // Notification icon
               onPressed: () {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('📢✨ Release Notes'),
+                      title: const Text('✨Release Notes (1.5)'),
                       content: const Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("🔢 **Calculator Highlights:**"),
-                          SizedBox(height: 8),
-                          Text("➕ Perform fast and accurate calculations."),
-                          Text("📊 Designed for financial simplicity."),
+                          Text("1️⃣ Enhanced EMI Calculation 📊"),
+                          // SizedBox(height: 8),
+                          Text("2️⃣ Multiple Loan Types 🏠🚗🎓"),
+                          Text("3️⃣ Customizable Loan Parameters ⚙️💼"),
+                          Text("4️⃣ Loan Breakdown💡🎉"),
+                          Text("5️⃣ Currency Selection💸🌍"),
+                          
                           SizedBox(height: 16),
-                          Text(
-                              "💡 *Note:* This is a tool for financial calculations only, not a lending service."
-                          ),
+                          const Text(
+                "💡 *Note:* This FinFlux - EMI Calculator app is just a financial tool and not any loan provider or connection with any NBFC or any finance services. "
+                "This app is working as a financial calculator app and not giving any lending services."
+              ),
+                          // Text(
+                          //     "💡 *Note:* This is a tool for financial calculations only, not a lending service."
+                          // ),
+                    
                         ],
                       ),
                       actions: [
@@ -77,9 +85,13 @@ class LoanOptions extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-              Navigator.push(
+            //   Navigator.push(
+            //    context,
+            //    MaterialPageRoute(builder: (context) => const AdvancedLoanCalculatorScreen()),
+            //  );
+             Navigator.push(
                context,
-               MaterialPageRoute(builder: (context) => const AdvancedLoanCalculatorScreen()),
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
              );
               },
               child: LoanCard(title: AppLocalizations.of(context)!.businessLoan, ImagePath: 'assets/house_loan.png', BgImagePath: 'assets/bd_07.png'),
@@ -88,31 +100,55 @@ class LoanOptions extends StatelessWidget {
               onTap: () {
                Navigator.push(
                context,
-               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner()),
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
              );
             },
               child: LoanCard(title: AppLocalizations.of(context)!.mortgageLoans, ImagePath: 'assets/mortgage_loan.png', BgImagePath: 'assets/bd_04.png'),
             ),
             GestureDetector(
-              onTap: () { },
+              onTap: () { 
+
+              Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
+             );
+              },
               child: LoanCard(title: AppLocalizations.of(context)!.flatVsReducing, ImagePath: 'assets/car_loan.png', BgImagePath:'assets/bd_02.png'),
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/home_loan');
+               Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
+             );
               } ,
               child: LoanCard(title: AppLocalizations.of(context)!.homeLoan, ImagePath: 'assets/home_loan.png', BgImagePath: 'assets/bd_01.png'),
             ),
             GestureDetector(
-              onTap: () { },
+              onTap: () {
+               Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
+             );
+               },
               child: LoanCard(title: AppLocalizations.of(context)!.fixedDeposit, ImagePath: 'assets/deposit_loan.png', BgImagePath: 'assets/bd_03.png'),
             ),
             GestureDetector(
-              onTap: () { },
+              onTap: () {
+                  Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
+             );
+               },
               child: LoanCard(title: AppLocalizations.of(context)!.carLoan, ImagePath: 'assets/car_cal_loan.png',  BgImagePath: 'assets/bd_06.png'),
             ),
             GestureDetector(
-              onTap: () { },
+              onTap: () { 
+                  Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const PersonalLoanPlanner(nameCategory: 'EMi Calculater',)),
+             );
+              },
               child: LoanCard(title: AppLocalizations.of(context)!.recurringDeposit, ImagePath: 'assets/recurring_dep.png', BgImagePath: 'assets/bd_05.png'),
             ),
         

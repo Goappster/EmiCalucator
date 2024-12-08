@@ -15,7 +15,7 @@ class LoanResultScreen extends StatefulWidget {
   final String currencyCode;
 
   const LoanResultScreen({
-    Key? key,
+    super.key,
     required this.emi,
     required this.loanAmount,
     required this.interestRate,
@@ -24,7 +24,7 @@ class LoanResultScreen extends StatefulWidget {
     required this.totalInterest,
     required this.totalAmount,
     required this.currencyCode,
-  }) : super(key: key);
+  });
 
   @override
   State<LoanResultScreen> createState() => _LoanResultScreenState();
@@ -335,14 +335,14 @@ Total Amount: ${currency.format(widget.totalAmount)}
                               reservedSize: 60,
                             ),
                           ),
-                          rightTitles: AxisTitles(
+                          rightTitles: const AxisTitles(
                             sideTitles: SideTitles(showTitles: false),
                           ),
-                          topTitles: AxisTitles(
+                          topTitles: const AxisTitles(
                             sideTitles: SideTitles(showTitles: false),
                           ),
                         ),
-                        gridData: FlGridData(show: false),
+                        gridData: const FlGridData(show: false),
                         borderData: FlBorderData(show: false),
                       ),
                     ),
@@ -399,10 +399,10 @@ Total Amount: ${currency.format(widget.totalAmount)}
                     return DataRow(
                       cells: [
                         DataCell(Text(month['month'].toString())),
-                        DataCell(Text(currency.format(month['emi']))),
-                        DataCell(Text(currency.format(month['principal']))),
-                        DataCell(Text(currency.format(month['interest']))),
-                        DataCell(Text(currency.format(month['balance']))),
+                        DataCell(Text(currency.format(month['emi'].toDouble()))),
+                        DataCell(Text(currency.format(month['principal'].toDouble()))),
+                        DataCell(Text(currency.format(month['interest'].toDouble()))),
+                        DataCell(Text(currency.format(month['balance'].toDouble()))),
                       ],
                     );
                   }).toList(),

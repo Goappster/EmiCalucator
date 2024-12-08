@@ -28,52 +28,119 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
   String _selectedCurrencyCode = 'INR';
 
   double calculateEMI() {
-    double principal = double.parse(_loanAmountController.text);
-    double annualRate = double.parse(_interestRateController.text) / 100;
-    int years = int.parse(_yearsController.text);
-    int months = int.parse(_monthsController.text);
-    
-    // Calculate total months
-    int totalMonths = (years * 12) + months;
-    
-    // Monthly interest rate
-    double monthlyRate = annualRate / 12;
-    
-    // Calculate fees
-    double originationFee = principal * (double.parse(_originationFeeController.text) / 100);
-    double documentationFee = double.parse(_documentationFeeController.text);
-    double otherFees = _otherFeesController.text.isEmpty ? 0 : double.parse(_otherFeesController.text);
-    
-    // Add fees to principal
-    double totalPrincipal = principal + originationFee + documentationFee + otherFees;
-    
-    // EMI calculation formula: P * r * (1 + r)^n / ((1 + r)^n - 1)
-    double emi = totalPrincipal * 
-                 monthlyRate * 
-                 pow(1 + monthlyRate, totalMonths) / 
-                 (pow(1 + monthlyRate, totalMonths) - 1);
-    
-    return emi;
+    try {
+      double principal = double.parse(_loanAmountController.text);
+      double annualRate = double.parse(_interestRateController.text) / 100;
+      int years = int.parse(_yearsController.text);
+      int months = int.parse(_monthsController.text);
+      
+      // Calculate total months
+      int totalMonths = (years * 12) + months;
+      if (totalMonths <= 0) {
+        throw Exception('Loan term must be greater than 0');
+      }
+      
+      // Adjust rate based on compounding period
+      double effectiveRate;
+      switch (_compoundingPeriod) {
+        case 'Monthly':
+          effectiveRate = annualRate / 12;
+          break;
+        case 'Quarterly':
+          effectiveRate = annualRate / 4;
+          break;
+        case 'Semi-Annually':
+          effectiveRate = annualRate / 2;
+          break;
+        case 'Annually':
+          effectiveRate = annualRate;
+          break;
+        default:
+          effectiveRate = annualRate / 12;
+      }
+      
+      // Calculate fees
+      double originationFee = principal * (double.parse(_originationFeeController.text.isEmpty ? "0" : _originationFeeController.text) / 100);
+      double documentationFee = double.parse(_documentationFeeController.text.isEmpty ? "0" : _documentationFeeController.text);
+      double otherFees = _otherFeesController.text.isEmpty ? 0 : double.parse(_otherFeesController.text);
+      
+      // Add fees to principal
+      double totalPrincipal = principal + originationFee + documentationFee + otherFees;
+      
+      // Adjust payment frequency based on payback period
+      int paymentsPerYear;
+      switch (_paybackPeriod) {
+        case 'Monthly':
+          paymentsPerYear = 12;
+          break;
+        case 'Quarterly':
+          paymentsPerYear = 4;
+          break;
+        case 'Semi-Annually':
+          paymentsPerYear = 2;
+          break;
+        case 'Annually':
+          paymentsPerYear = 1;
+          break;
+        default:
+          paymentsPerYear = 12;
+      }
+      
+      double periodicRate = effectiveRate / paymentsPerYear;
+      int totalPayments = (totalMonths * paymentsPerYear) ~/ 12;
+      
+      // EMI calculation formula: P * r * (1 + r)^n / ((1 + r)^n - 1)
+      double emi = totalPrincipal * 
+                   periodicRate * 
+                   pow(1 + periodicRate, totalPayments) / 
+                   (pow(1 + periodicRate, totalPayments) - 1);
+      
+      return emi;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, double> calculateLoanDetails() {
-    double principal = double.parse(_loanAmountController.text);
-    double annualRate = double.parse(_interestRateController.text) / 100;
-    int years = int.parse(_yearsController.text);
-    int months = int.parse(_monthsController.text);
-    
-    int totalMonths = (years * 12) + months;
-    double emi = calculateEMI();
-    
-    double totalAmount = emi * totalMonths;
-    double totalInterest = totalAmount - principal;
-    
-    return {
-      'emi': emi,
-      'totalAmount': totalAmount,
-      'totalInterest': totalInterest,
-      'principal': principal,
-    };
+    try {
+      double principal = double.parse(_loanAmountController.text);
+      double emi = calculateEMI();
+      int years = int.parse(_yearsController.text);
+      int months = int.parse(_monthsController.text);
+      
+      // Calculate payments based on payback period
+      int paymentsPerYear;
+      switch (_paybackPeriod) {
+        case 'Monthly':
+          paymentsPerYear = 12;
+          break;
+        case 'Quarterly':
+          paymentsPerYear = 4;
+          break;
+        case 'Semi-Annually':
+          paymentsPerYear = 2;
+          break;
+        case 'Annually':
+          paymentsPerYear = 1;
+          break;
+        default:
+          paymentsPerYear = 12;
+      }
+      
+      int totalMonths = (years * 12) + months;
+      int totalPayments = (totalMonths * paymentsPerYear) ~/ 12;
+      double totalAmount = emi * totalPayments;
+      double totalInterest = totalAmount - principal;
+      
+      return {
+        'emi': emi,
+        'totalAmount': totalAmount,
+        'totalInterest': totalInterest,
+        'principal': principal,
+      };
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -104,6 +171,10 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter loan amount';
+                        }
+                        double? amount = double.tryParse(value);
+                        if (amount == null || amount <= 0) {
+                          return 'Please enter a valid amount';
                         }
                         return null;
                       },
@@ -147,6 +218,16 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter interest rate';
+                  }
+                  double? rate = double.tryParse(value);
+                  if (rate == null || rate <= 0 || rate > 100) {
+                    return 'Interest rate must be between 0 and 100';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -180,6 +261,16 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter years';
+                        }
+                        int? years = int.tryParse(value);
+                        if (years == null || years < 0) {
+                          return 'Years must be 0 or greater';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -192,6 +283,21 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter months';
+                        }
+                        int? months = int.tryParse(value);
+                        if (months == null || months < 0 || months > 11) {
+                          return 'Months must be between 0 and 11';
+                        }
+                        // Check if both years and months are 0
+                        int years = int.tryParse(_yearsController.text) ?? 0;
+                        if (years == 0 && months == 0) {
+                          return 'Total loan period must be greater than 0';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -227,6 +333,15 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    double? fee = double.tryParse(value);
+                    if (fee == null || fee < 0 || fee > 100) {
+                      return 'Fee must be between 0 and 100%';
+                    }
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -237,6 +352,15 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    double? fee = double.tryParse(value);
+                    if (fee == null || fee < 0) {
+                      return 'Fee must be 0 or greater';
+                    }
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -247,6 +371,15 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    double? fee = double.tryParse(value);
+                    if (fee == null || fee < 0) {
+                      return 'Fee must be 0 or greater';
+                    }
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -254,22 +387,31 @@ class _AdvancedLoanCalculatorScreenState extends State<AdvancedLoanCalculatorScr
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Map<String, double> loanDetails = calculateLoanDetails();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoanResultScreen(
-                            emi: loanDetails['emi']!,
-                            loanAmount: loanDetails['principal']!,
-                            interestRate: double.parse(_interestRateController.text),
-                            years: int.parse(_yearsController.text),
-                            months: int.parse(_monthsController.text),
-                            totalInterest: loanDetails['totalInterest']!,
-                            totalAmount: loanDetails['totalAmount']!,
-                            currencyCode: _selectedCurrencyCode,
+                      try {
+                        Map<String, double> loanDetails = calculateLoanDetails();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoanResultScreen(
+                              emi: loanDetails['emi']!,
+                              loanAmount: loanDetails['principal']!,
+                              interestRate: double.parse(_interestRateController.text),
+                              years: int.parse(_yearsController.text),
+                              months: int.parse(_monthsController.text),
+                              totalInterest: loanDetails['totalInterest']!,
+                              totalAmount: loanDetails['totalAmount']!,
+                              currencyCode: _selectedCurrencyCode,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error: ${e.toString()}'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     }
                   },
                   child: const Padding(
